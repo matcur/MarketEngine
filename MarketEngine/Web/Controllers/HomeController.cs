@@ -27,11 +27,13 @@ namespace MarketEngine.Web.Controllers
             this.logger = logger;
         }
 
+        [Route("/")]
         public IActionResult Index()
         {
             return View(cart);
         }
 
+        [Route("/privacy")]
         public IActionResult Privacy()
         {
             return View();

@@ -1,0 +1,12 @@
+﻿@model IReadOnlyList<Goods>
+
+@foreach (var goods in Model)
+{
+    <form method="post">
+        <span>@goods.Name</span>
+        <span>@goods.Price</span>
+        <input name="id" value="@goods.Id" hidden/>
+        <input name="Count"/>
+        <button>Sub</button>
+    </form>
+}
