@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using MarketEngine.Data.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
@@ -36,9 +37,21 @@ namespace MarketEngine.Core.GoodsCart
             InitializeGoodsSets();
         }
 
-        public void AddGoodsSet(GoodsSet set)
+        public void AddGoods(Goods goods, long count)
         {
-            goodsSets.Add(set);
+            if (HasGoods(goods))
+                throw new ArgumentException($"{goods.Name} already in cart");
+
+            goodsSets.Add(MakeGoodsSet(goods, count));
+            CacheGoodsSets();
+        }
+
+        public void UpdateGoodsCount(Goods goods, long count)
+        {
+            if (!HasGoods(goods))
+                throw new ArgumentException($"{goods.Name} doesn't exists in cart");
+
+            FindGoodsSet(goods).Count = count;
             CacheGoodsSets();
         }
 
@@ -51,6 +64,16 @@ namespace MarketEngine.Core.GoodsCart
             CacheGoodsSets();
         }
 
+        public bool HasGoods(Goods goods)
+        {
+            return goodsSets.Exists(s => s.Goods.Id == goods.Id);
+        }
+
+        public GoodsSet FindGoodsSet(Goods goods)
+        {
+            return goodsSets.Find(s => s.Goods.Id == goods.Id);
+        }
+
         private void InitializeGoodsSets()
         {
             List<GoodsSet> sets = null;
@@ -61,6 +84,11 @@ namespace MarketEngine.Core.GoodsCart
         private void CacheGoodsSets()
         {
             cache.Set(id, goodsSets);
+        }
+
+        private GoodsSet MakeGoodsSet(Goods goods, long count)
+        {
+            return new GoodsSet(goods, count);
         }
     }
 }

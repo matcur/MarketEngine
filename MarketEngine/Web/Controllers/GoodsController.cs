@@ -35,10 +35,13 @@ namespace MarketEngine.Web.Controllers
 
         [Route("/goods")]
         [HttpPost]
-        public IActionResult AddGoods(GoodsSetViewModel goodsSetModel)
+        public IActionResult InsertGoodsSet(GoodsSetViewModel goodsSetModel)
         {
-            var goodsSet = new GoodsSet(goodsList[(int)goodsSetModel.GoodsId], goodsSetModel.Count);
-            cart.AddGoodsSet(goodsSet);
+            var goods = goodsList[(int)goodsSetModel.GoodsId];
+            if (cart.HasGoods(goods))
+                cart.UpdateGoodsCount(goods, goodsSetModel.Count);
+            else
+                cart.AddGoods(goods, goodsSetModel.Count);
 
             return Redirect("/");
         }

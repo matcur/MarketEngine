@@ -10,7 +10,7 @@ namespace MarketEngine.Core.GoodsCart
     {
         public Goods Goods { get; }
 
-        public long Count { get; }
+        public long Count { get; set; }
 
         public double Price => Goods.Price * Count;
 
