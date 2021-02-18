@@ -1,5 +1,5 @@
 ﻿using MarketEngine.Data;
-using MarketEngine.Models;
+using MarketEngine.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -8,7 +8,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MarketEngine.Controllers
+namespace MarketEngine.Web.Controllers
 {
     public class HomeController : Controller
     {
