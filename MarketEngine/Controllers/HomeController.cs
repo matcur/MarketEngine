@@ -1,4 +1,5 @@
-﻿using MarketEngine.Models;
+﻿using MarketEngine.Data;
+using MarketEngine.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -11,11 +12,14 @@ namespace MarketEngine.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly MarketContext marketContext;
 
-        public HomeController(ILogger<HomeController> logger)
+        private readonly ILogger<HomeController> logger;
+
+        public HomeController(ILogger<HomeController> logger, MarketContext marketContext)
         {
-            _logger = logger;
+            this.marketContext = marketContext;
+            this.logger = logger;
         }
 
         public IActionResult Index()
