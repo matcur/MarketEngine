@@ -1,3 +1,5 @@
+using MarketEngine.Core.Extensions;
+using MarketEngine.Core.GoodsCart;
 using MarketEngine.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -25,6 +27,12 @@ namespace MarketEngine
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpContextAccessor();
+            services.AddDistributedMemoryCache();
+            services.AddSession();
+
+            services.AddTransient<Cart>();
+
             services.AddControllersWithViews();
 
             services.AddDbContext<MarketContext>(options =>
@@ -32,6 +40,8 @@ namespace MarketEngine
                 var connection = Configuration.GetConnectionString("MarketConnection");
                 options.UseSqlServer(connection);
             }, ServiceLifetime.Transient);
+
+            services.ConfigureRazorEngineFolders();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,6 +59,7 @@ namespace MarketEngine
             }
             app.UseHttpsRedirection();
 
+            app.UseSession();
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>

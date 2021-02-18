@@ -1,4 +1,6 @@
-﻿using MarketEngine.Data;
+﻿using MarketEngine.Core.GoodsCart;
+using MarketEngine.Data;
+using MarketEngine.Data.Models;
 using MarketEngine.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -14,17 +16,20 @@ namespace MarketEngine.Web.Controllers
     {
         private readonly MarketContext marketContext;
 
+        private readonly Cart cart;
+        
         private readonly ILogger<HomeController> logger;
 
-        public HomeController(ILogger<HomeController> logger, MarketContext marketContext)
+        public HomeController(ILogger<HomeController> logger, MarketContext marketContext, Cart cart)
         {
             this.marketContext = marketContext;
+            this.cart = cart;
             this.logger = logger;
         }
 
         public IActionResult Index()
         {
-            return View();
+            return View(cart);
         }
 
         public IActionResult Privacy()
