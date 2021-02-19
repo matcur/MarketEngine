@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 
 namespace MarketEngine.Data.Models
 {
-    public class GoodsCategory
+    public class MarketUser
     {
         public long Id { get; set; }
 
         public string Name { get; set; }
 
-        public List<Goods> Goods { get; set; } = new List<Goods>();
+        public List<Order> Orders { get; set; } = new List<Order>();
     }
 }

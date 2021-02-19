@@ -1,0 +1,8 @@
+﻿@model IReadOnlyList<Order>
+
+@foreach (var order in Model)
+{
+    <form method="post">
+        <span>@order.Price</span>
+    </form>
+}

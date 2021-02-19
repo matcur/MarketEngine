@@ -1,4 +1,5 @@
-﻿using MarketEngine.Data.Models;
+﻿using MarketEngine.Data;
+using MarketEngine.Data.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
 using System;
@@ -25,13 +26,16 @@ namespace MarketEngine.Core.GoodsCart
 
         private List<GoodsSet> goodsSets = new List<GoodsSet>();
 
-        private readonly string id;
+        private readonly MarketContext db;
 
         private readonly IMemoryCache cache;
+        
+        private readonly string id;
 
-        public Cart(IMemoryCache cache, IHttpContextAccessor contextAccessor)
+        public Cart(IMemoryCache cache, IHttpContextAccessor contextAccessor, MarketContext db)
         {
             this.cache = cache;
+            this.db = db;
             var sessionId = contextAccessor.HttpContext.Request.Cookies[".AspNetCore.Session"];
             id = $"Goods-Card-{sessionId}";
             InitializeGoodsSets();
@@ -72,6 +76,25 @@ namespace MarketEngine.Core.GoodsCart
         public GoodsSet FindGoodsSet(Goods goods)
         {
             return goodsSets.Find(s => s.Goods.Id == goods.Id);
+        }
+
+        public Order CreateOrder()
+        {
+            var order = MakeOrder();
+
+            db.Orders.Add(order);
+            db.SaveChanges();
+
+            return order;
+        }
+
+        public Order MakeOrder()
+        {
+            var order = new Order();
+            foreach (var set in goodsSets)
+                order.OrderItems.Add(new OrderItem(set));
+
+            return order;
         }
 
         private void InitializeGoodsSets()

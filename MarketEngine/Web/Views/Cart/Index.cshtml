@@ -1,0 +1,18 @@
+﻿@model Cart
+
+<ul>
+    @foreach (var set in Model.GoodsSets)
+    {
+        <li>
+            <span>Name: @set.Goods.Name </span>
+            <span>Count: @set.Count</span>
+        </li>
+    }
+</ul>
+
+@if (Model.GoodsSets.Count != 0)
+{
+    <form method="post" action="/order">
+        <button>Оформить заказ</button>
+    </form>
+} 

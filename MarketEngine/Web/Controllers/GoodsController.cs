@@ -1,7 +1,9 @@
 ﻿using MarketEngine.Core.GoodsCart;
+using MarketEngine.Data;
 using MarketEngine.Data.Models;
 using MarketEngine.Web.ViewModels.Goods;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,36 +14,51 @@ namespace MarketEngine.Web.Controllers
     public class GoodsController : Controller
     {
         private readonly Cart cart;
+        
+        private readonly MarketContext marketContext;
 
-        private readonly List<Goods> goodsList = new List<Goods>
-        {
-            new Goods() { Id = 0, Name = "a", Price = 100},
-            new Goods() { Id = 1, Name = "b", Price = 100},
-            new Goods() { Id = 2, Name = "c", Price = 200},
-            new Goods() { Id = 3, Name = "d", Price = 300},
-        };
+        private readonly DbSet<Goods> goodsTable;
 
-        public GoodsController(Cart cart)
+        public GoodsController(Cart cart, MarketContext marketContext)
         {
             this.cart = cart;
+            this.marketContext = marketContext;
+            goodsTable = marketContext.Goods;
         }
 
-        [Route("/goods")]
         [HttpGet]
+        [Route("/goods")]
         public IActionResult Index()
         {
-            return View(goodsList);
+            return View(goodsTable.ToList());
         }
 
-        [Route("/goods")]
-        [HttpPost]
-        public IActionResult InsertGoodsSet(GoodsSetViewModel goodsSetModel)
+        [HttpGet]
+        [Route("/goods/create")]
+        public IActionResult Create()
         {
-            var goods = goodsList[(int)goodsSetModel.GoodsId];
+            return View();
+        }
+
+        [HttpPost]
+        [Route("/goods/create")]
+        public IActionResult Create(GoodsViewModel goodsViewModel)
+        {
+            goodsTable.Add(new Goods(goodsViewModel));
+            marketContext.SaveChanges();
+
+            return View();
+        }
+
+        [HttpPost]
+        [Route("/goods")]
+        public IActionResult InsertGoodsSet(GoodsSetViewModel goodsSet)
+        {
+            var goods = goodsTable.First(g => g.Id == goodsSet.GoodsId);
             if (cart.HasGoods(goods))
-                cart.UpdateGoodsCount(goods, goodsSetModel.Count);
+                cart.UpdateGoodsCount(goods, goodsSet.Count);
             else
-                cart.AddGoods(goods, goodsSetModel.Count);
+                cart.AddGoods(goods, goodsSet.Count);
 
             return Redirect("/");
         }
