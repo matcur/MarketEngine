@@ -1,4 +1,5 @@
 ﻿using MarketEngine.Data.Models;
+using MarketEngine.Data.Models.Files;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

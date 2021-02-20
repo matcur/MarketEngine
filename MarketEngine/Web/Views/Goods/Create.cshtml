@@ -1,5 +1,33 @@
-﻿<form method="post">
-    <input name="Name" />
-    <input name="Price" />
+﻿<form method="post" enctype="multipart/form-data">
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" name="Name" placeholder="Name" aria-label="name" aria-describedby="goods-name">
+        <div class="input-group-append">
+            <span class="input-group-text" id="goods-name">@@example.com</span>
+        </div>
+    </div>
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" name="Price" placeholder="Price" aria-label="name" aria-describedby="goods-price">
+        <div class="input-group-append">
+            <span class="input-group-text" id="goods-price">@@example.com</span>
+        </div>
+    </div>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text">Upload</span>
+        </div>
+        <div class="custom-file">
+            <input name="Images" type="file" multiple class="custom-file-input" id="goods-images">
+            <label class="custom-file-label" for="goods-images">Choose file</label>
+        </div>
+    </div>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text">Upload</span>
+        </div>
+        <div class="custom-file">
+            <input name="Thumbnail" type="file" class="custom-file-input" id="goods-thumbnail">
+            <label class="custom-file-label" for="goods-thumbnail">Choose files</label>
+        </div>
+    </div>
     <button>Submin</button>
 </form>

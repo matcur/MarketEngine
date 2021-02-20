@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <Folder Include="Infrastructure\Payment\" />
+    <Folder Include="wwwroot\files\" />
   </ItemGroup>
 
 </Project>

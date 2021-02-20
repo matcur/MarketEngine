@@ -38,7 +38,7 @@ namespace MarketEngine
             services.AddDbContext<MarketContext>(options =>
             {
                 var connection = Configuration.GetConnectionString("MarketConnection");
-                options.UseSqlServer(connection);
+                options.UseSqlServer(connection).EnableSensitiveDataLogging();
             }, ServiceLifetime.Transient);
 
             services.ConfigureRazorEngineFolders();

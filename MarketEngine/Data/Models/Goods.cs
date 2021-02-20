@@ -1,4 +1,6 @@
-﻿using MarketEngine.Web.ViewModels.Goods;
+﻿using MarketEngine.Core.Extensions;
+using MarketEngine.Data.Models.Files;
+using MarketEngine.Web.ViewModels.Goods;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +18,8 @@ namespace MarketEngine.Data.Models
             Price = viewModel.Price;
             CountryId = 1;
             CurrencyId = 1;
+            Images = viewModel.Images.Map(f => new GoodsFile(f));
+            ThumbnailPath = new GoodsFile(viewModel.Thumbnail).Path;
         }
 
         public long Id { get; set; }
@@ -28,9 +32,13 @@ namespace MarketEngine.Data.Models
 
         public long CountryId { get; set; }
 
+        public string ThumbnailPath { get; set; }
+
         public Currency Currency { get; set; }
 
         public Country Country { get; set; }
+
+        public List<GoodsFile> Images { get; set; } = new List<GoodsFile>();
 
         public List<GoodsCategory> Categories { get; set; } = new List<GoodsCategory>();
     }
