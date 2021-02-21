@@ -50,17 +50,11 @@ namespace MarketEngine.Web.Controllers
             return View();
         }
 
-        [HttpPost]
-        [Route("/goods")]
-        public IActionResult InsertGoodsSet(GoodsSetViewModel goodsSet)
+        [HttpGet]
+        [Route("/goods/{id:long}")]
+        public IActionResult Details(Goods goods)
         {
-            var goods = goodsTable.First(g => g.Id == goodsSet.GoodsId);
-            if (cart.HasGoods(goods))
-                cart.UpdateGoodsCount(goods, goodsSet.Count);
-            else
-                cart.AddGoods(goods, goodsSet.Count);
-
-            return Redirect("/");
+            return View(goods);
         }
     }
 }

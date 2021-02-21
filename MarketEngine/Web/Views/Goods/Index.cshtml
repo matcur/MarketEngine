@@ -2,11 +2,8 @@
 
 @foreach (var goods in Model)
 {
-    <form method="post">
-        <span>@goods.Name</span>
+    <div>
+        <a asp-controller="Goods" asp-action="Details" asp-route-id="@goods.Id">@goods.Name</a>
         <span>@goods.Price</span>
-        <input name="GoodsId" value="@goods.Id" hidden/>
-        <input name="Count"/>
-        <button>Sub</button>
-    </form>
+    </div>
 }

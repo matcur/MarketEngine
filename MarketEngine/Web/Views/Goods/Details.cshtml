@@ -1,0 +1,13 @@
+﻿@model Goods
+
+<div>
+    <span>@Model.Name</span>
+    <span>@Model.Price</span>
+    <form 
+          asp-controller="Cart" 
+          asp-action="InsertGoodsSet"
+          asp-route-GoodsId="@Model.Id">
+        <input name="Count"/>
+        <button>Добавить в корзину</button>
+    </form>
+</div> 
