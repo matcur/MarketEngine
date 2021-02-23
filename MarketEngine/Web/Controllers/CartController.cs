@@ -1,6 +1,7 @@
 ﻿using MarketEngine.Core.GoodsCart;
 using MarketEngine.Data;
-using MarketEngine.Web.ViewModels.Goods;
+using MarketEngine.Data.Models;
+using MarketEngine.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -13,7 +14,8 @@ namespace MarketEngine.Web.Controllers
     public class CartController : Controller
     {
         private readonly Cart cart;
-        private readonly DbSet<Data.Models.Goods> goodsTable;
+
+        private readonly DbSet<Goods> goodsTable;
 
         public CartController(Cart cart, MarketContext marketContext)
         {
@@ -29,13 +31,24 @@ namespace MarketEngine.Web.Controllers
 
         [HttpPost]
         [Route("/cart/goods/{GoodsId:long}")]
-        public IActionResult InsertGoodsSet(GoodsSetViewModel goodsSet)
+        public IActionResult InsertGoodsSet(GoodsSetViewModel set)
         {
-            var goods = goodsTable.First(g => g.Id == goodsSet.GoodsId);
+            var goods = goodsTable.Include(g => g.Coupons)
+                                  .First(g => g.Id == set.GoodsId);
+
+            var enteredCode = set.CouponCode;
+            if (!string.IsNullOrEmpty(enteredCode))
+            {
+                var coupon = goods.Coupons.First(c => c.Code == enteredCode);
+                cart.AddGoodsSet(new GoodsSet(goods, set.Count, coupon));
+
+                return Redirect("/");
+            }
+
             if (cart.HasGoods(goods))
-                cart.UpdateGoodsCount(goods, goodsSet.Count);
+                cart.UpdateGoodsCount(goods, set.Count);
             else
-                cart.AddGoods(goods, goodsSet.Count);
+                cart.AddGoods(goods, set.Count);
 
             return Redirect("/");
         }

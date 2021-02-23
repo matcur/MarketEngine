@@ -43,10 +43,15 @@ namespace MarketEngine.Core.GoodsCart
 
         public void AddGoods(Goods goods, long count)
         {
-            if (HasGoods(goods))
-                throw new ArgumentException($"{goods.Name} already in cart");
+            AddGoodsSet(new GoodsSet(goods, count));
+        }
 
-            goodsSets.Add(MakeGoodsSet(goods, count));
+        public void AddGoodsSet(GoodsSet set)
+        {
+            if (HasGoods(set.Goods))
+                throw new ArgumentException($"{set.Goods.Name} already in cart");
+
+            goodsSets.Add(set);
             CacheGoodsSets();
         }
 
@@ -107,11 +112,6 @@ namespace MarketEngine.Core.GoodsCart
         private void CacheGoodsSets()
         {
             cache.Set(id, goodsSets);
-        }
-
-        private GoodsSet MakeGoodsSet(Goods goods, long count)
-        {
-            return new GoodsSet(goods, count);
         }
     }
 }

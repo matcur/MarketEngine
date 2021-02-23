@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MarketEngine.Web.ViewModels.Goods
+namespace MarketEngine.Web.ViewModels
 {
     public class GoodsViewModel
     {

@@ -20,6 +20,8 @@ namespace MarketEngine.Data
 
         public DbSet<MarketUser> Users { get; set; }
 
+        public DbSet<Coupon> Coupons { get; set; }
+
         public MarketContext(DbContextOptions options): base(options) 
         {
             Database.EnsureCreated();

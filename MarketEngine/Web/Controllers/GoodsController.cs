@@ -1,7 +1,7 @@
 ﻿using MarketEngine.Core.GoodsCart;
 using MarketEngine.Data;
 using MarketEngine.Data.Models;
-using MarketEngine.Web.ViewModels.Goods;
+using MarketEngine.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -13,15 +13,12 @@ namespace MarketEngine.Web.Controllers
 {
     public class GoodsController : Controller
     {
-        private readonly Cart cart;
-        
         private readonly MarketContext marketContext;
 
         private readonly DbSet<Goods> goodsTable;
 
-        public GoodsController(Cart cart, MarketContext marketContext)
+        public GoodsController(MarketContext marketContext)
         {
-            this.cart = cart;
             this.marketContext = marketContext;
             goodsTable = marketContext.Goods;
         }
@@ -52,9 +49,11 @@ namespace MarketEngine.Web.Controllers
 
         [HttpGet]
         [Route("/goods/{id:long}")]
-        public IActionResult Details(Goods goods)
+        public IActionResult Details(long id)
         {
-            return View(goods);
+            var goods = goodsTable.First(g => g.Id == id);
+
+            return View(new GoodsSetViewModel(new GoodsSet(goods, 0)));
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using MarketEngine.Core.Extensions;
 using MarketEngine.Data.Models.Files;
-using MarketEngine.Web.ViewModels.Goods;
+using MarketEngine.Web.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,6 +37,8 @@ namespace MarketEngine.Data.Models
         public Currency Currency { get; set; }
 
         public Country Country { get; set; }
+
+        public List<Coupon> Coupons { get; set; } = new List<Coupon>();
 
         public List<GoodsFile> Images { get; set; } = new List<GoodsFile>();
 
